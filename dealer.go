@@ -19,14 +19,14 @@ type dealer interface {
 }
 
 type dealerServer struct {
-	pos []int8
-	lock sync.Mutex
+	pos        []int8
+	lock       sync.Mutex
 	standalone bool
 }
 
 func newDealerServer(standalone bool) *dealerServer {
 	return &dealerServer{
-		pos: make([]int8, tripLength),
+		pos:        make([]int8, tripLength),
 		standalone: standalone,
 	}
 }
@@ -101,15 +101,15 @@ func (d *dealerServer) Found(trip string) {
 
 type dealerClient struct {
 	host string
-	cli http.Client
-	pos chan [tripLength]uint8
+	cli  http.Client
+	pos  chan [tripLength]uint8
 }
 
 func newDealerClient(remoteHost string) *dealerClient {
 	return &dealerClient{
 		host: remoteHost,
-		cli: http.Client{Timeout: time.Second},
-		pos: make(chan [tripLength]uint8, 1),
+		cli:  http.Client{Timeout: time.Second},
+		pos:  make(chan [tripLength]uint8, 1),
 	}
 }
 
@@ -152,7 +152,7 @@ func (d *dealerClient) get() error {
 }
 
 func (d *dealerClient) NextBlock() []byte {
-	pos := <- d.pos
+	pos := <-d.pos
 	buf := make([]byte, tripLength)
 	for i := 0; i < tripLength; i++ {
 		buf[i] = chars[pos[i]]

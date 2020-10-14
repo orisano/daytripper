@@ -1,6 +1,8 @@
 package main
 
-import "testing"
+import (
+	"testing"
+)
 
 var d *dealerServer
 var t *tripper
@@ -16,8 +18,10 @@ func Benchmark(b *testing.B) {
 }
 
 func benchmarkGoOne(b *testing.B) {
-	err := t.Go()
-	if err != nil {
-		panic(err)
+	for i := 0; i < b.N; i++ {
+		err := t.Go()
+		if err != nil {
+			b.Fatal(err)
+		}
 	}
 }

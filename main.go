@@ -12,15 +12,15 @@ import (
 
 const (
 	tripLength = 16
-	charsLen = 65
+	charsLen   = 65
 )
 
-var chars []byte = []byte("0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()_+|[];',./{}:\"<>?`~")
+var chars = []byte("0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()_+|[];',./{}:\"<>?`~")
 
 func main() {
 	flag.Usage = usage
 
-	nr := flag.Int("nr", runtime.NumCPU() * 2, "Number of goroutines (default: runtime.NumCPU() * 2)")
+	nr := flag.Int("nr", runtime.NumCPU()*2, "Number of goroutines (default: runtime.NumCPU() * 2)")
 	remote := flag.String("remote", "", "Remote daytripper host (optional for distributed calculation)")
 	standalone := flag.Bool("s", false, "Standalone mode (runs without server)")
 
@@ -64,9 +64,9 @@ func main() {
 			lastCount = count
 			count = 0
 			for i := 0; i < *nr; i++ {
-				count += ts[i].Count
+				count += ts[i].Count()
 			}
-			fmt.Printf("Hashes: %d (%d hash/s) | Elapsed %d sec", count, count-lastCount, time.Now().Sub(start) / time.Second)
+			fmt.Printf("Hashes: %d (%d hash/s) | Elapsed %d sec", count, count-lastCount, time.Now().Sub(start)/time.Second)
 			time.Sleep(time.Second)
 			fmt.Print("\r")
 		}
@@ -91,4 +91,3 @@ Usage: %s [-nr N] [-remote HOST] TRIP
 func usage() {
 	fmt.Printf(usageStr[1:], os.Args[0])
 }
-
